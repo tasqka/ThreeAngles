@@ -480,15 +480,9 @@ function DetailModal({
             ))}
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-brand-orange-50 rounded-xl p-3 text-center">
-              <p className="text-[10px] text-brand-orange-600">Est. Daily Impressions</p>
-              <p className="text-xl font-black text-brand-orange-500">{item.dailyImpressions.toLocaleString()}</p>
-            </div>
-            <div className="bg-brand-orange-50 rounded-xl p-3 text-center">
-              <p className="text-[10px] text-brand-orange-600">Monthly Rate</p>
-              <p className="text-xl font-black text-brand-orange-500">{formatPrice(item.pricePerMonth)} EGP</p>
-            </div>
+          <div className="bg-brand-orange-50 rounded-xl p-3 text-center">
+            <p className="text-[10px] text-brand-orange-600">Est. Daily Impressions</p>
+            <p className="text-xl font-black text-brand-orange-500">{item.dailyImpressions.toLocaleString()}</p>
           </div>
 
           <div>
