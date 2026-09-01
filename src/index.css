@@ -1,0 +1,112 @@
+@import "leaflet/dist/leaflet.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "TT Fors";
+  src: url("/assets/fonts/tt-fors-black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "TT Fors Outline";
+  src: url("/assets/fonts/tt-fors-outline.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Hide scrollbar while keeping scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@layer base {
+  html {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    color-scheme: light;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+}
+
+@layer utilities {
+  /* Diagonal cuts matching the OUTFRONT layout */
+  .clip-diagonal-right {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%);
+  }
+
+  @media (min-width: 768px) {
+    .clip-diagonal-right {
+      clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
+
+  .clip-diagonal-left {
+    clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%);
+  }
+
+  @media (min-width: 768px) {
+    .clip-diagonal-left {
+      clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
+    }
+  }
+
+  .zoomed-rotate {
+    transform: scale(1.35) rotate(-3deg);
+  }
+
+  .clip-diagonal-testimonial {
+    clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);
+  }
+
+  /* Custom glow effect */
+  .glow-orange {
+    filter: drop-shadow(0 0 25px rgba(249, 115, 22, 0.45));
+  }
+
+  /* Custom text strokes and typography accents */
+  .text-stroke-white {
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.9);
+  }
+
+  .text-stroke-dark {
+    -webkit-text-stroke: 1.5px rgba(18, 18, 22, 0.9);
+  }
+}
+
+/* Custom transitions and interactive states */
+.tab-transition {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes testimonialFadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-testimonial {
+  animation: testimonialFadeSlide 0.4s ease-out forwards;
+}
