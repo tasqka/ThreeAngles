@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { CaseStudy } from "../../types";
 
 interface FeaturedCaseStudiesProps {
@@ -16,17 +16,42 @@ export const FeaturedCaseStudies: React.FC<FeaturedCaseStudiesProps> = ({
   const [activeId, setActiveId] = useState<string>("");
   const activeItem = items.find((i) => i.id === activeId) ?? null;
   const displayHeadline = activeItem?.headline || subheadline;
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const scroll = scrollRef.current;
+    if (!section || !scroll) return;
+
+    const onWheel = (e: WheelEvent) => {
+      const rect = section.getBoundingClientRect();
+      const pinned = rect.top <= 1 && rect.bottom >= window.innerHeight - 1;
+      if (!pinned) return;
+
+      const maxScroll = scroll.scrollHeight - scroll.clientHeight;
+      const atTop = scroll.scrollTop <= 0;
+      const atBottom = scroll.scrollTop >= maxScroll - 1;
+
+      if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+        return;
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+      scroll.scrollTop = Math.max(0, Math.min(maxScroll, scroll.scrollTop + e.deltaY));
+    };
+
+    document.addEventListener("wheel", onWheel, { passive: false });
+    return () => document.removeEventListener("wheel", onWheel);
+  }, []);
 
   return (
-    /*
-     * Section is a fixed 65vh tall, overflow-visible so the right
-     * name list can bleed below. The background images are contained
-     * inside their own overflow-hidden wrapper so they stay clipped.
-     */
     <section
+      ref={sectionRef}
       id="case-studies"
       className="relative"
-      style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: "#f97316" }}
+      style={{ position: "sticky", top: 0, height: "100vh", background: "#f97316" }}
     >
       {/* ── Background images — clipped to section bounds only ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -106,57 +131,60 @@ export const FeaturedCaseStudies: React.FC<FeaturedCaseStudiesProps> = ({
           </div>
         </div>
 
-        {/* RIGHT: names that overflow & scroll below the section */}
+        {/* RIGHT: names list — starts from middle, scrolls via wheel hijack */}
         <div
-          className="lg:w-[74%] pl-0 pr-6 lg:pr-10 pt-[35vh] pb-0 overflow-y-auto scrollbar-hide"
-          style={{ maxHeight: "calc(100vh - 35vh)" }}
+          ref={scrollRef}
+          className="lg:w-[74%] pl-0 pr-6 lg:pr-10 overflow-y-auto scrollbar-hide relative"
+          style={{ height: "100vh" }}
         >
-          <ul className="flex flex-col">
-            {items.map((item, idx) => {
-              const isActive = item.id === activeId;
-              const rotation =
-                idx % 2 === 0 ? "-rotate-[0.5deg]" : "rotate-[0.5deg]";
+          <div style={{ paddingTop: "50vh", paddingBottom: "10vh" }}>
+            <ul className="flex flex-col">
+              {items.map((item, idx) => {
+                const isActive = item.id === activeId;
+                const rotation =
+                  idx % 2 === 0 ? "-rotate-[0.5deg]" : "rotate-[0.5deg]";
 
-              return (
-                <li key={item.id}>
-                  <button
-                    onClick={() => setActiveId(item.id)}
-                    className={[
-                      "w-full text-right font-display font-black uppercase tracking-tighter",
-                      "leading-[0.87] transition-all duration-300",
-                      "text-[clamp(2.5rem,5.5vw,5.5rem)]",
-                      "transform origin-right",
-                      rotation,
-                      "py-[0.14em]",
-                      "focus:outline-none focus-visible:ring-2 focus-visible:ring-black/50",
-                      isActive ? "scale-[1.012]" : "hover:scale-[1.006]",
-                    ].join(" ")}
-                    style={
-                      isActive
-                        ? {
-                            fontFamily: "'TT Fors', sans-serif",
-                            WebkitTextFillColor: "white",
-                            color: "white",
-                          }
-                        : activeId
+                return (
+                  <li key={item.id}>
+                    <button
+                      onClick={() => setActiveId(item.id)}
+                      className={[
+                        "w-full text-right font-display font-black uppercase tracking-tighter",
+                        "leading-[0.87] transition-all duration-300",
+                        "text-[clamp(2.5rem,5.5vw,5.5rem)]",
+                        "transform origin-right",
+                        rotation,
+                        "py-[0.14em]",
+                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-black/50",
+                        isActive ? "scale-[1.012]" : "hover:scale-[1.006]",
+                      ].join(" ")}
+                      style={
+                        isActive
                           ? {
-                              fontFamily: "'TT Fors Outline', sans-serif",
+                              fontFamily: "'TT Fors', sans-serif",
+                              WebkitTextFillColor: "white",
                               color: "white",
                             }
-                          : {
-                              fontFamily: "'TT Fors', sans-serif",
-                              WebkitTextFillColor: "black",
-                              color: "black",
-                            }
-                    }
-                    aria-current={isActive ? "true" : undefined}
-                  >
-                    {item.name}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+                          : activeId
+                            ? {
+                                fontFamily: "'TT Fors Outline', sans-serif",
+                                color: "white",
+                              }
+                            : {
+                                fontFamily: "'TT Fors', sans-serif",
+                                WebkitTextFillColor: "black",
+                                color: "black",
+                              }
+                      }
+                      aria-current={isActive ? "true" : undefined}
+                    >
+                      {item.name}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
