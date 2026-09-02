@@ -22,7 +22,7 @@ export function SEO({
   jsonLd,
 }: SEOProps) {
   const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} — Out of Home Advertising in Egypt`;
-  const fullDescription = description || "Connect with millions daily through premier out-of-home advertising, billboards, transit media, and digital screens across Cairo's top markets.";
+  const fullDescription = description || "Connect with millions daily through premier out-of-home advertising, billboards, transit media, and digital screens across Sheikh Zayed and 6th of October.";
   const url = `${SITE_URL}${path}`;
 
   return (

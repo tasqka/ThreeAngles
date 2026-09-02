@@ -56,7 +56,7 @@ const faqs = [
   },
   {
     question: "How effective is billboard advertising compared to other mediums?",
-    answer: "Billboards consistently outperform digital ads in brand recall and awareness. Studies show billboards drive 40% more online activity per dollar spent compared to other media, making them one of the most cost-efficient advertising channels.",
+    answer: "Billboards consistently outperform digital ads in brand recall and awareness. Studies show billboards drive 40% more online activity per unit of spend compared to other media, making them one of the most cost-efficient advertising channels.",
   },
   {
     question: "How long should I run my billboard advertising campaign?",
@@ -185,7 +185,7 @@ export const Billboards: React.FC = () => {
                     traffic, or launch a new product, billboard advertising delivers
                     unmatched visibility and recall. Out-of-home advertising continues
                     to be the most effective medium for reaching consumers at scale,
-                    with studies showing that OOH drives more online activity per dollar
+                    with studies showing that OOH drives more online activity per unit of spend
                     spent than any other medium.
                   </p>
                 </div>

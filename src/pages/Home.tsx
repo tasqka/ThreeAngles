@@ -16,7 +16,7 @@ export const Home: React.FC = () => {
     <>
       <SEO
         title="ThreeAngles — Out of Home Advertising in Egypt"
-        description="Egypt's leading out-of-home advertising company. We build brands in the real world through billboards, transit media, digital screens, and street furniture across Cairo's top markets."
+        description="Egypt's leading out-of-home advertising company. We build brands in the real world through billboards, transit media, digital screens, and street furniture across Sheikh Zayed and 6th of October."
         path="/"
         jsonLd={{
           "@context": "https://schema.org",
