@@ -1,6 +1,7 @@
 import React from "react";
 import { landingContent } from "../data/content";
 import { Hero } from "../components/sections/Hero";
+import { NewCampaignsCarousel } from "../components/sections/NewCampaignsCarousel";
 import { PowerOfIrlMedia } from "../components/sections/PowerOfIrlMedia";
 import { PowerToMove } from "../components/sections/PowerToMove";
 import { StatsRow } from "../components/sections/StatsRow";
@@ -18,6 +19,12 @@ export const Home: React.FC = () => {
         headlineLine3={landingContent.hero.headlineLine3}
         heroImage={landingContent.hero.heroImage}
         heroImageAlt={landingContent.hero.heroImageAlt}
+      />
+
+      <NewCampaignsCarousel
+        tag={landingContent.newCampaigns.tag}
+        headline={landingContent.newCampaigns.headline}
+        items={landingContent.newCampaigns.items}
       />
 
       <PowerOfIrlMedia

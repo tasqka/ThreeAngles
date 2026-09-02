@@ -1,17 +1,7 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
-import L from "leaflet";
-import "leaflet.markercluster/dist/MarkerCluster.css";
-import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import MarkerClusterGroup from "react-leaflet-markercluster";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import {
   Search,
   SlidersHorizontal,
@@ -20,68 +10,196 @@ import {
   Plus,
   ChevronDown,
   ChevronUp,
-  Calendar,
   Users,
   Maximize2,
-  DollarSign,
   Check,
   BarChart3,
   Layers,
-  ZoomIn,
-  ZoomOut,
-  Crosshair,
-  Building,
-  Monitor,
-  Eye,
   Ruler,
 } from "lucide-react";
 import { inventory, type InventoryItem, type Format } from "../data/inventory";
 
-/* ─── Leaflet icon fix ─── */
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
-
-/* ─── Pin icons by status ─── */
-function createPinIcon(color: string) {
-  return new L.DivIcon({
-    className: "",
-    html: `<div style="width:12px;height:12px;background:${color};border:2px solid white;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.25);"></div>`,
-    iconSize: [12, 12],
-    iconAnchor: [6, 6],
-  });
-}
-
-function createActivePinIcon(color: string) {
-  return new L.DivIcon({
-    className: "",
-    html: `<div style="width:20px;height:20px;background:${color};border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3);"></div>`,
-    iconSize: [20, 20],
-    iconAnchor: [10, 10],
-  });
-}
-
-const pinColors = {
+/* ─── Status colors ─── */
+const pinColors: Record<string, string> = {
   available: "#22c55e",
   limited: "#f59e0b",
   booked: "#ef4444",
 };
 
-/* ─── Map events ─── */
-function MapEventsHandler({ onBoundsChange }: { onBoundsChange: (bounds: L.LatLngBounds) => void }) {
-  useMapEvents({ moveend: (e) => onBoundsChange(e.target.getBounds()) });
-  return null;
-}
+const CLUSTER_COLORS: Record<string, string> = {
+  available: "#22c55e",
+  limited: "#f59e0b",
+  booked: "#ef4444",
+};
 
-function FlyToMarker({ item }: { item: InventoryItem | null }) {
-  const map = useMap();
+function MapComponent({
+  items,
+  selectedItem,
+  onSelectItem,
+}: {
+  items: InventoryItem[];
+  selectedItem: InventoryItem | null;
+  onSelectItem: (item: InventoryItem) => void;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<maplibregl.Map | null>(null);
+  const popupRef = useRef<maplibregl.Popup | null>(null);
+  const itemsMapRef = useRef<Map<string, InventoryItem>>(new Map());
+
   useEffect(() => {
-    if (item) map.flyTo([item.lat, item.lng], 16, { duration: 1.2 });
-  }, [item, map]);
-  return null;
+    itemsMapRef.current = new Map(items.map((i) => [i.id, i]));
+  }, [items]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const map = new maplibregl.Map({
+      container: containerRef.current,
+      style: "https://tiles.openfreemap.org/styles/liberty",
+      center: [30.985, 29.975],
+      zoom: 13,
+      maxZoom: 19,
+      attributionControl: false,
+    });
+
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+    map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+
+    map.on("load", () => {
+      const geojson: GeoJSON.FeatureCollection = {
+        type: "FeatureCollection",
+        features: items.map((item) => ({
+          type: "Feature",
+          properties: { id: item.id },
+          geometry: { type: "Point" as const, coordinates: [item.lng, item.lat] },
+        })),
+      };
+
+      map.addSource("locations", {
+        type: "geojson",
+        data: geojson,
+        cluster: true,
+        clusterMaxZoom: 16,
+        clusterRadius: 50,
+      });
+
+      map.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "locations",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": [
+            "step", ["get", "point_count"],
+            "#ea580c", 5,
+            "#d97706", 10,
+            "#dc2626",
+          ],
+          "circle-radius": ["step", ["get", "point_count"], 18, 5, 24, 10, 32],
+          "circle-stroke-width": 3,
+          "circle-stroke-color": "#ffffff",
+        },
+      });
+
+      map.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "locations",
+        filter: ["has", "point_count"],
+        layout: {
+          "text-field": "{point_count_abbreviated}",
+          "text-font": ["Noto Sans Regular"],
+          "text-size": 12,
+        },
+        paint: { "text-color": "#ffffff" },
+      });
+
+      map.addLayer({
+        id: "unclustered-point",
+        type: "circle",
+        source: "locations",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-color": [
+            "match", ["get", "id"],
+            ...items.flatMap((item) => [item.id, CLUSTER_COLORS[item.availability] || "#999"]),
+            "#999",
+          ] as any,
+          "circle-radius": 7,
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#ffffff",
+        },
+      });
+
+      const popup = new maplibregl.Popup({ offset: 16, closeButton: false, maxWidth: "220px" });
+
+      map.on("click", "clusters", (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ["clusters"] });
+        if (!features?.length) return;
+        const clusterId = (features[0].properties as any).cluster_id;
+        const source = map.getSource("locations") as maplibregl.GeoJSONSource;
+        source.getClusterExpansionZoom(clusterId).then((zoom) => {
+          map.easeTo({ center: (features[0].geometry as any).coordinates, zoom: zoom + 0.5, duration: 500 });
+        }).catch(console.error);
+      });
+
+      map.on("click", "unclustered-point", (e) => {
+        if (!e.features?.length) return;
+        const props = e.features[0].properties as any;
+        const item = itemsMapRef.current.get(String(props.id));
+        if (!item) return;
+
+        popup
+          .setLngLat([item.lng, item.lat])
+          .setHTML(
+            `<div style="padding:4px 0;">
+              <p style="font-weight:700;font-size:12px;color:#171717;margin:0;">${item.name}</p>
+              <p style="font-size:10px;color:#737373;margin:2px 0 0;">${item.format} &middot; ${item.size}</p>
+            </div>`
+          )
+          .addTo(map);
+
+        onSelectItem(item);
+      });
+
+      map.on("mouseenter", "clusters", () => { map.getCanvas().style.cursor = "pointer"; });
+      map.on("mouseleave", "clusters", () => { map.getCanvas().style.cursor = ""; });
+      map.on("mouseenter", "unclustered-point", () => { map.getCanvas().style.cursor = "pointer"; });
+      map.on("mouseleave", "unclustered-point", () => { map.getCanvas().style.cursor = ""; });
+    });
+
+    mapRef.current = map;
+
+    return () => {
+      popupRef.current?.remove();
+      map.remove();
+      mapRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !map.isStyleLoaded() || !map.getSource("locations")) return;
+
+    const geojson: GeoJSON.FeatureCollection = {
+      type: "FeatureCollection",
+      features: items.map((item) => ({
+        type: "Feature",
+        properties: { id: item.id },
+        geometry: { type: "Point" as const, coordinates: [item.lng, item.lat] },
+      })),
+    };
+
+    (map.getSource("locations") as maplibregl.GeoJSONSource).setData(geojson);
+  }, [items]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !selectedItem) return;
+    map.flyTo({ center: [selectedItem.lng, selectedItem.lat], zoom: 16, duration: 1200 });
+  }, [selectedItem]);
+
+  return <div ref={containerRef} className="w-full h-full" />;
 }
 
 /* ─── Filter types ─── */
@@ -94,8 +212,6 @@ interface Filters {
   availability: string;
   minImpressions: number;
   trafficType: string;
-  minPrice: number;
-  maxPrice: number;
 }
 
 const defaultFilters: Filters = {
@@ -107,8 +223,6 @@ const defaultFilters: Filters = {
   availability: "",
   minImpressions: 0,
   trafficType: "",
-  minPrice: 0,
-  maxPrice: 0,
 };
 
 /* ─── Filter Panel ─── */
@@ -249,23 +363,7 @@ function FilterPanel({
         </select>
       </Section>
 
-      <Section id="commercial" icon={DollarSign} label="Commercial">
-        <div className="flex gap-2">
-          <input
-            type="number"
-            placeholder="Min $"
-            value={filters.minPrice || ""}
-            onChange={(e) => update("minPrice", Number(e.target.value))}
-            className="w-1/2 px-3 py-2 text-xs border border-neutral-200 rounded-lg focus:ring-1 focus:ring-brand-orange-500 focus:border-transparent outline-none"
-          />
-          <input
-            type="number"
-            placeholder="Max $"
-            value={filters.maxPrice || ""}
-            onChange={(e) => update("maxPrice", Number(e.target.value))}
-            className="w-1/2 px-3 py-2 text-xs border border-neutral-200 rounded-lg focus:ring-1 focus:ring-brand-orange-500 focus:border-transparent outline-none"
-          />
-        </div>
+      <Section id="availability" icon={Check} label="Availability">
         <select
           value={filters.availability}
           onChange={(e) => update("availability", e.target.value)}
@@ -287,17 +385,6 @@ function FilterPanel({
       )}
     </div>
   );
-}
-
-/* ─── Price formatter ─── */
-function formatPrice(price: number): string {
-  if (price >= 1000000) {
-    return `${(price / 1000000).toFixed(1)}M`;
-  }
-  if (price >= 1000) {
-    return `${(price / 1000).toFixed(price >= 10000 ? 0 : 1)}K`;
-  }
-  return price.toLocaleString();
 }
 
 /* ─── Inventory Card ─── */
@@ -378,10 +465,6 @@ function InventoryCard({
           <div>
             <p className="text-[10px] text-neutral-400">Impressions</p>
             <p className="text-xs font-bold text-neutral-900">{item.dailyImpressions.toLocaleString()}/day</p>
-          </div>
-          <div className="text-right">
-            <p className="text-[10px] text-neutral-400">From</p>
-            <p className="text-xs font-bold text-brand-orange-500">{formatPrice(item.pricePerMonth)} EGP/mo</p>
           </div>
         </div>
         <button
@@ -522,7 +605,6 @@ function DetailModal({
 function PlanTray({ plan, onRemove, onClear }: { plan: InventoryItem[]; onRemove: (id: string) => void; onClear: () => void }) {
   const [expanded, setExpanded] = useState(false);
   const totalImpressions = plan.reduce((s, i) => s + i.dailyImpressions, 0);
-  const totalCost = plan.reduce((s, i) => s + i.pricePerMonth, 0);
 
   if (plan.length === 0) return null;
 
@@ -539,10 +621,6 @@ function PlanTray({ plan, onRemove, onClear }: { plan: InventoryItem[]; onRemove
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="text-right hidden sm:block">
-            <p className="text-[10px] text-neutral-400">Monthly</p>
-            <p className="text-sm font-black text-brand-orange-500">{formatPrice(totalCost)} EGP</p>
-          </div>
           {expanded ? <ChevronDown className="w-4 h-4 text-neutral-400" /> : <ChevronUp className="w-4 h-4 text-neutral-400" />}
         </div>
       </div>
@@ -556,7 +634,6 @@ function PlanTray({ plan, onRemove, onClear }: { plan: InventoryItem[]; onRemove
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] font-bold text-neutral-900 truncate">{item.name}</p>
                   <p className="text-[10px] text-neutral-400">{item.format}</p>
-                  <p className="text-[10px] text-brand-orange-500 font-bold">{formatPrice(item.pricePerMonth)} EGP/mo</p>
                 </div>
                 <button onClick={() => onRemove(item.id)} className="absolute top-1.5 right-1.5 text-neutral-300 hover:text-red-500 transition-colors">
                   <X className="w-3 h-3" />
@@ -594,8 +671,6 @@ export const MediaFinder: React.FC = () => {
       if (filters.availability && item.availability !== filters.availability) return false;
       if (item.dailyImpressions < filters.minImpressions) return false;
       if (filters.trafficType && item.trafficType !== filters.trafficType) return false;
-      if (filters.minPrice > 0 && item.pricePerMonth < filters.minPrice) return false;
-      if (filters.maxPrice > 0 && item.pricePerMonth > filters.maxPrice) return false;
       return true;
     });
   }, [filters]);
@@ -609,8 +684,6 @@ export const MediaFinder: React.FC = () => {
     if (filters.availability) c++;
     if (filters.minImpressions > 0) c++;
     if (filters.trafficType) c++;
-    if (filters.minPrice > 0) c++;
-    if (filters.maxPrice > 0) c++;
     return c;
   }, [filters]);
 
@@ -662,66 +735,7 @@ export const MediaFinder: React.FC = () => {
       <div className="relative h-[calc(100vh-200px)]">
         {/* Map - Full background */}
         <div className={`absolute inset-0 z-0 ${mobileView === "map" ? "block" : "hidden"} lg:block`}>
-          <MapContainer center={[29.975, 30.985]} zoom={13} className="w-full h-full" zoomControl={false}>
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <MapEventsHandler onBoundsChange={() => {}} />
-            <FlyToMarker item={selectedItem} />
-
-            <MarkerClusterGroup
-              chunkedLoading
-              maxClusterRadius={50}
-              spiderfyOnMaxZoom
-              showCoverageOnHover={false}
-              iconCreateFunction={(cluster) => {
-                const count = cluster.getChildCount();
-                return L.divIcon({
-                  className: "",
-                  html: `<div style="width:36px;height:36px;background:#ea580c;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:12px;font-weight:700;">${count}</span></div>`,
-                  iconSize: [36, 36],
-                  iconAnchor: [18, 18],
-                });
-              }}
-            >
-              {filteredItems.map((item) => (
-                <Marker
-                  key={item.id}
-                  position={[item.lat, item.lng]}
-                  icon={
-                    selectedItem?.id === item.id
-                      ? createActivePinIcon(pinColors[item.availability])
-                      : createPinIcon(pinColors[item.availability])
-                  }
-                  eventHandlers={{ click: () => handleSelectItem(item) }}
-                >
-                  <Popup>
-                    <div className="min-w-[180px] p-1">
-                      <p className="font-bold text-xs text-neutral-900">{item.name}</p>
-                      <p className="text-[10px] text-neutral-500 mt-0.5">{item.format} · {item.size}</p>
-                      <p className="text-[10px] text-brand-orange-500 font-bold mt-1">{formatPrice(item.pricePerMonth)} EGP/mo</p>
-                    </div>
-                  </Popup>
-                </Marker>
-              ))}
-            </MarkerClusterGroup>
-          </MapContainer>
-
-          {/* Map controls */}
-          <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[1000]">
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <button className="w-8 h-8 flex items-center justify-center hover:bg-neutral-50 transition-colors border-b border-neutral-100">
-                <ZoomIn className="w-3.5 h-3.5 text-neutral-600" />
-              </button>
-              <button className="w-8 h-8 flex items-center justify-center hover:bg-neutral-50 transition-colors">
-                <ZoomOut className="w-3.5 h-3.5 text-neutral-600" />
-              </button>
-            </div>
-            <button className="w-8 h-8 bg-white rounded-lg shadow-md flex items-center justify-center hover:bg-neutral-50 transition-colors">
-              <Crosshair className="w-3.5 h-3.5 text-neutral-600" />
-            </button>
-          </div>
+          <MapComponent items={filteredItems} selectedItem={selectedItem} onSelectItem={handleSelectItem} />
         </div>
 
         {/* List Panel - Floating overlay on top of map */}

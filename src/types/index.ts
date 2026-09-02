@@ -51,6 +51,13 @@ export interface CaseStudy {
   image: string;
 }
 
+export interface NewCampaign {
+  id: string;
+  brand: string;
+  tagline: string;
+  image: string;
+}
+
 export interface LandingPageContent {
   brand: {
     name: string;
@@ -67,6 +74,11 @@ export interface LandingPageContent {
     headlineLine3: string;
     heroImage: string;
     heroImageAlt: string;
+  };
+  newCampaigns: {
+    tag: string;
+    headline: string;
+    items: NewCampaign[];
   };
   powerOfIrl: {
     image: {

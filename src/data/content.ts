@@ -58,6 +58,48 @@ export const landingContent: LandingPageContent = {
     heroImageAlt:
       "Massive digital billboard lighting up Sheikh Zayed streets at night",
   },
+  newCampaigns: {
+    tag: "New Campaigns",
+    headline: "LATEST CAMPAIGNS",
+    items: [
+      {
+        id: "eterna",
+        brand: "Eterna Developments",
+        tagline: "Project Launch · 2026",
+        image: "/assets/Campains Images/eternaImg.jpg",
+      },
+      {
+        id: "roshan",
+        brand: "Roshan Masr Development",
+        tagline: "Brand Awareness · 2026",
+        image: "/assets/Campains Images/roshan.jpg",
+      },
+      {
+        id: "levels",
+        brand: "Levels Developments",
+        tagline: "Project Launch · 2026",
+        image: "/assets/Campains Images/levels.jpg",
+      },
+      {
+        id: "kayan-elaf",
+        brand: "Kayan | Elaf",
+        tagline: "Brand Awareness · 2026",
+        image: "/assets/Campains Images/kayanelaf.jpg",
+      },
+      {
+        id: "marsoum",
+        brand: "Marsoum Developments",
+        tagline: "Project Launch · 2026",
+        image: "/assets/Campains Images/marsoum.jpg",
+      },
+      {
+        id: "zaya",
+        brand: "Zaya Developments",
+        tagline: "Project Launch · 2026",
+        image: "/assets/Campains Images/zaya.jpg",
+      },
+    ],
+  },
   powerOfIrl: {
     image: {
       src: "https://images.unsplash.com/photo-1568322503122-d21b5f527af8?auto=format&fit=crop&w=900&q=80",
