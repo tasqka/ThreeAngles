@@ -64,7 +64,7 @@ export const Media: React.FC = () => {
           </div>
 
           {/* Title */}
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight text-neutral-950 leading-[0.95]">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black uppercase tracking-tight text-neutral-950 leading-[0.95]">
             OOH MEDIA
             <br />
             <span className="text-brand-orange-500">SOLUTIONS</span>
@@ -106,7 +106,7 @@ export const Media: React.FC = () => {
             {/* Left: Sticky Headline */}
             <div className="lg:col-span-7">
               <div className="lg:sticky lg:top-32">
-                <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-neutral-950 leading-[0.95]">
+                <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-neutral-950 leading-[0.95]">
                   CHOOSE THE
                   <br />
                   RIGHT MEDIA
@@ -174,7 +174,7 @@ export const Media: React.FC = () => {
       {/* View Our Media Section */}
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-neutral-950 leading-[0.95]">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-neutral-950 leading-[0.95]">
             VIEW OUR
             <br />
             <span className="text-brand-orange-500">MEDIA</span>
@@ -211,7 +211,7 @@ export const Media: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Left: Content */}
             <div className="lg:col-span-5">
-              <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-neutral-950 leading-[0.95]">
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-neutral-950 leading-[0.95]">
                 VIEW OUR
                 <br />
                 <span className="text-brand-orange-500">NATIONAL</span>

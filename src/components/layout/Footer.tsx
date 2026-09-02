@@ -72,11 +72,11 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[1.05] max-w-5xl mx-auto">
+          <div className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[1.05] max-w-5xl mx-auto">
             <span>{ctaBand.headlineStart}</span>{" "}
             <Link
               to="/contact"
-              className="inline-flex items-center space-x-2 px-6 sm:px-10 py-2 sm:py-3.5 my-2 sm:my-0 bg-brand-orange-500 hover:bg-brand-orange-600 active:bg-brand-orange-700 text-white rounded-full shadow-2xl hover:shadow-brand-glow transform hover:scale-105 transition-all text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-normal align-middle"
+              className="inline-flex items-center space-x-2 px-5 sm:px-10 py-2 sm:py-3.5 my-2 sm:my-0 bg-brand-orange-500 hover:bg-brand-orange-600 active:bg-brand-orange-700 text-white rounded-full shadow-2xl hover:shadow-brand-glow transform hover:scale-105 transition-all text-xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-normal align-middle"
             >
               <span>{ctaBand.buttonText}</span>
               <ArrowRight className="w-6 h-6 sm:w-8 sm:h-8 inline" />

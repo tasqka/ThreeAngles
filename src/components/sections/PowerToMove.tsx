@@ -120,13 +120,13 @@ export const PowerToMove: React.FC<PowerToMoveProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left: Content */}
           <div className="lg:col-span-6 z-10">
-            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-black leading-[0.95]">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-black leading-[0.95]">
               {headline}
             </h2>
 
             {/* Animated counter */}
             <div className="mt-4 flex items-baseline gap-2">
-              <span className="font-display text-5xl sm:text-6xl lg:text-7xl font-black text-brand-orange-500 leading-none">
+              <span className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-brand-orange-500 leading-none">
                 {countValue}+
               </span>
               <span className="text-sm sm:text-base font-bold text-neutral-500 uppercase tracking-wider">
@@ -180,7 +180,7 @@ export const PowerToMove: React.FC<PowerToMoveProps> = ({
 
               {/* Floating Metrics Badge */}
               <div className="absolute bottom-4 right-2 sm:bottom-6 sm:right-6 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-neutral-100 flex items-center space-x-3">
-                <div className="w-15 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-brand-orange-600 font-bold text-sm">
+                <div className="w-16 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-brand-orange-600 font-bold text-sm">
                   {countValue}+
                 </div>
                 <div>

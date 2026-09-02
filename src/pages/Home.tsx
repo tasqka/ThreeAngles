@@ -70,7 +70,7 @@ export const Home: React.FC = () => {
         pins={landingContent.perfectSpots.pins}
       />
 
-      <div style={{ height: "300vh" }}>
+      <div className="h-auto lg:h-[300vh]">
         <FeaturedCaseStudies
           tag={landingContent.caseStudies.tag}
           subheadline={landingContent.caseStudies.subheadline}

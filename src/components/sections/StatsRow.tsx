@@ -20,7 +20,7 @@ export const StatsRow: React.FC<StatsRowProps> = ({ stats }) => {
               className="relative p-6 sm:p-8 rounded-2xl bg-neutral-50/70 border border-neutral-100 hover:border-orange-200 hover:bg-orange-50/30 transition-all duration-300 group"
             >
               {/* Stat Number in Brand Orange */}
-              <div className="font-display text-5xl sm:text-6xl lg:text-7xl font-black text-brand-orange-500 tracking-tighter leading-none">
+              <div className="font-display text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-black text-brand-orange-500 tracking-tighter leading-none">
                 {stat.value}
               </div>
 
@@ -46,7 +46,7 @@ export const StatsRow: React.FC<StatsRowProps> = ({ stats }) => {
 
                   {/* Tooltip Popup */}
                   {activeTooltip === index && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-neutral-900 text-white text-xs rounded-xl shadow-xl z-20 animate-fadeIn pointer-events-none">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 sm:w-64 p-3 bg-neutral-900 text-white text-xs rounded-xl shadow-xl z-20 animate-fadeIn pointer-events-none">
                       <p>{stat.tooltip}</p>
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900" />
                     </div>

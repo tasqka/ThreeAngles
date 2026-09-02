@@ -25,6 +25,7 @@ export const FeaturedCaseStudies: React.FC<FeaturedCaseStudiesProps> = ({
     if (!section || !scroll) return;
 
     const onWheel = (e: WheelEvent) => {
+      if (window.innerWidth < 1024) return;
       const rect = section.getBoundingClientRect();
       const pinned = rect.top <= 1 && rect.bottom >= window.innerHeight - 1;
       if (!pinned) return;
@@ -50,8 +51,7 @@ export const FeaturedCaseStudies: React.FC<FeaturedCaseStudiesProps> = ({
     <section
       ref={sectionRef}
       id="case-studies"
-      className="relative"
-      style={{ position: "sticky", top: 0, height: "100vh", background: "#f97316" }}
+      className="relative lg:sticky lg:top-0 lg:h-screen bg-brand-orange-500"
     >
       {/* ── Background images — clipped to section bounds only ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -77,7 +77,7 @@ export const FeaturedCaseStudies: React.FC<FeaturedCaseStudiesProps> = ({
       {/* ── Content — full height of section ── */}
       <div className="relative z-10 flex h-full flex-col lg:flex-row">
         {/* LEFT: header group + active case detail */}
-        <div className="lg:w-[52%] flex flex-col justify-center px-8 sm:px-10 lg:px-12 h-full">
+        <div className="lg:w-[52%] flex flex-col justify-center px-6 sm:px-8 lg:px-12 h-full py-8 lg:py-0">
           {/* Top: badge + heading + link grouped */}
           <div>
             {/* Pills */}
@@ -134,10 +134,9 @@ export const FeaturedCaseStudies: React.FC<FeaturedCaseStudiesProps> = ({
         {/* RIGHT: names list — starts from middle, scrolls via wheel hijack */}
         <div
           ref={scrollRef}
-          className="lg:w-[74%] pl-0 pr-6 lg:pr-10 overflow-y-auto scrollbar-hide relative"
-          style={{ height: "100vh" }}
+          className="lg:w-[74%] pl-0 pr-6 lg:pr-10 overflow-y-auto scrollbar-hide relative max-h-[50vh] lg:max-h-none"
         >
-          <div style={{ paddingTop: "50vh", paddingBottom: "10vh" }}>
+          <div style={{ paddingTop: "10vh", paddingBottom: "10vh" }} className="lg:pt-[50vh]">
             <ul className="flex flex-col">
               {items.map((item, idx) => {
                 const isActive = item.id === activeId;

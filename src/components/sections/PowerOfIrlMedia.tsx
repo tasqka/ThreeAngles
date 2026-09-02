@@ -56,7 +56,7 @@ export const PowerOfIrlMedia: React.FC<PowerOfIrlMediaProps> = ({
 
             {/* Dynamic Content based on Active Tab */}
             <div className="animate-fadeIn min-h-[280px] lg:min-h-[320px] flex flex-col justify-center">
-              <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white">
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white">
                 {activeTab.headline}
               </h2>
 

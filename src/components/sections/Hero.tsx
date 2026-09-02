@@ -39,7 +39,7 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left: Bold Typography Headline */}
           <div className="lg:col-span-5 flex flex-col justify-center z-10">
-            <h1 className="font-display text-[2.75rem] sm:text-6xl md:text-7xl xl:text-[80px] font-black leading-[0.85] tracking-tighter uppercase text-black">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-[80px] font-black leading-[0.85] tracking-tighter uppercase text-black">
               <span className="block">{headlineLine1}</span>
               <span className="block">{headlineLine2}</span>
               <span className="block text-brand-orange-500">

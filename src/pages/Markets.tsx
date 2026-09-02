@@ -110,7 +110,7 @@ export const Markets: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-2xl">
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-[0.95]">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-[0.95]">
               <span className="block">REACH YOUR</span>
               <span className="block">AUDIENCE WITH</span>
               <span className="block">EASE</span>

@@ -738,7 +738,7 @@ export const MediaFinder: React.FC = () => {
       </div>
 
       {/* Main Content - Map as bottom layer */}
-      <div className="relative h-[calc(100vh-200px)]">
+      <div className="relative h-[calc(100vh-140px)] md:h-[calc(100vh-180px)]">
         {/* Map - Full background */}
         <div className={`absolute inset-0 z-0 ${mobileView === "map" ? "block" : "hidden"} lg:block`}>
           <MapComponent items={filteredItems} selectedItem={selectedItem} onSelectItem={handleSelectItem} />

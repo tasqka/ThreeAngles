@@ -44,7 +44,7 @@ export const Testimonial: React.FC<TestimonialProps> = ({
             </div>
 
             {/* Slider Controls */}
-            <div className="hidden lg:flex items-center space-x-3 mt-12">
+            <div className="flex items-center space-x-3 mt-6 lg:mt-12">
               <button
                 onClick={goPrev}
                 aria-label="Previous quote"
