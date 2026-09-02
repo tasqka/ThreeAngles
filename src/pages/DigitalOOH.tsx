@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Download } from "lucide-react";
 import { landingContent } from "../data/content";
 import { FeaturedCaseStudies } from "../components/sections/FeaturedCaseStudies";
+import { SEO } from "../components/SEO";
 
 const digitalFormats = [
   {
@@ -70,6 +71,11 @@ const faqs = [
 export const DigitalOOH: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Digital Out-of-Home Advertising"
+        description="Cutting-edge digital OOH screens with dynamic content, real-time scheduling, and audience measurement across prime Cairo locations."
+        path="/media/digital-ooh"
+      />
       {/* Hero Section */}
       <section className="relative pt-28 pb-0 md:pt-36 overflow-hidden" style={{ backgroundColor: '#ea580c' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,6 +1,7 @@
 import { Play } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { SEO } from "../components/SEO";
 
 const tabs = [
   { id: "leadership", label: "Leadership" },
@@ -14,6 +15,17 @@ export const About: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="About Us"
+        description="Learn about ThreeAngles — Egypt's premier out-of-home advertising company. Our mission, vision, and the team behind the brands you see every day."
+        path="/about"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          "name": "About ThreeAngles",
+          "url": "https://threeangles.vercel.app/about"
+        }}
+      />
       {/* Hero Section */}
       <section
         className="relative pt-28 pb-0 md:pt-36 overflow-hidden"

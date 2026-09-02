@@ -1,5 +1,6 @@
 import React from "react";
 import { PageTemplate } from "./PageTemplate";
+import { SEO } from "../components/SEO";
 
 const services = [
   {
@@ -25,6 +26,11 @@ export const Creative: React.FC = () => {
       title="Creative"
       subtitle="Our in-house creative studio delivers award-winning designs that maximize real-world attention."
     >
+      <SEO
+        title="Creative Services"
+        description="From concept to installation — our creative team designs eye-catching OOH campaigns that connect brands with real-world audiences."
+        path="/creative"
+      />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {services.map((service) => (
           <div

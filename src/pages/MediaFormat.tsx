@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { SEO } from "../components/SEO";
 
 const mediaFormats = [
   {
@@ -95,6 +96,11 @@ export const MediaFormat: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title={format?.name || "Media Format"}
+        description={format?.description || "Explore this out-of-home advertising format offered by ThreeAngles."}
+        path={`/media/${formatId}`}
+      />
       {/* Hero Section */}
       <section className="relative pt-28 pb-0 md:pt-36 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

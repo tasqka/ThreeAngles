@@ -18,6 +18,7 @@ import {
   Ruler,
 } from "lucide-react";
 import { inventory, type InventoryItem, type Format } from "../data/inventory";
+import { SEO } from "../components/SEO";
 
 /* ─── Status colors ─── */
 const pinColors: Record<string, string> = {
@@ -704,6 +705,11 @@ export const MediaFinder: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-neutral-50">
+      <SEO
+        title="Media Finder — Browse OOH Locations"
+        description="Search and filter available out-of-home advertising locations across Sheikh Zayed and 6th of October. Find billboards, digital screens, and transit media near you."
+        path="/media-finder"
+      />
       {/* Hero Header */}
       <section className="relative pt-28 pb-0 md:pt-36 overflow-hidden" style={{ backgroundColor: '#ea580c' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

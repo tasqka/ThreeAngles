@@ -1,5 +1,6 @@
 import React from "react";
 import { PageTemplate } from "./PageTemplate";
+import { SEO } from "../components/SEO";
 
 const features = [
   {
@@ -30,6 +31,11 @@ export const AdTech: React.FC = () => {
       title="Ad Tech"
       subtitle="Data-driven technology powering smarter out-of-home campaigns with measurable results."
     >
+      <SEO
+        title="Ad Tech"
+        description="Our proprietary ad technology platform for campaign management, audience measurement, and real-time performance tracking."
+        path="/ad-tech"
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {features.map((feature) => (
           <div

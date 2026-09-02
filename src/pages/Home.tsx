@@ -9,10 +9,25 @@ import { PerfectSpots } from "../components/sections/PerfectSpots";
 import { FeaturedCaseStudies } from "../components/sections/FeaturedCaseStudies";
 import { ProductsServices } from "../components/sections/ProductsServices";
 import { Testimonial } from "../components/sections/Testimonial";
+import { SEO } from "../components/SEO";
 
 export const Home: React.FC = () => {
   return (
     <>
+      <SEO
+        title="ThreeAngles — Out of Home Advertising in Egypt"
+        description="Egypt's leading out-of-home advertising company. We build brands in the real world through billboards, transit media, digital screens, and street furniture across Cairo's top markets."
+        path="/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "ThreeAngles",
+          "url": "https://threeangles.vercel.app",
+          "description": "Out of home advertising company in Egypt",
+          "sameAs": ["https://www.instagram.com/threeangles_advertising/"],
+          "contactPoint": { "@type": "ContactPoint", "contactType": "sales", "area": "EG" }
+        }}
+      />
       <Hero
         headlineLine1={landingContent.hero.headlineLine1}
         headlineLine2={landingContent.hero.headlineLine2}

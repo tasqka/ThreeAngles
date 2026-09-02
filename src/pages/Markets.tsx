@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Search, ChevronDown, ChevronRight, ArrowDown } from "lucide-react";
 import { PerfectSpots } from "../components/sections/PerfectSpots";
 import { landingContent } from "../data/content";
+import { SEO } from "../components/SEO";
 
 const marketsData = [
   {
@@ -82,6 +83,11 @@ export const Markets: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Markets — Sheikh Zayed & 6th of October"
+        description="Explore our coverage across Sheikh Zayed and 6th of October City. Premium out-of-home advertising locations in Cairo's fastest-growing communities."
+        path="/markets"
+      />
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-brand-orange-500 overflow-hidden">
         {/* Diagonal Stripes Background */}

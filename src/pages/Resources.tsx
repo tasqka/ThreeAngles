@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { SEO } from "../components/SEO";
 
 const categories = [
   {
@@ -85,6 +86,11 @@ export const Resources: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Resources & Insights"
+        description="Industry insights, case studies, and guides on out-of-home advertising. Learn how to maximize your OOH campaigns with ThreeAngles."
+        path="/resources"
+      />
       {/* Hero Section */}
       <section className="relative pt-28 pb-0 md:pt-36 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

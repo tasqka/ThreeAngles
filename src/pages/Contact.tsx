@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Mail, Phone, MapPin, ArrowRight, CheckCircle2 } from "lucide-react";
 import { PageTemplate } from "./PageTemplate";
+import { SEO } from "../components/SEO";
 
 export const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -15,6 +16,17 @@ export const Contact: React.FC = () => {
       title="Contact Us"
       subtitle="Ready to build your brand in the real world? Get in touch with our team."
     >
+      <SEO
+        title="Contact Us"
+        description="Get in touch with ThreeAngles for out-of-home advertising inquiries, media plans, and partnership opportunities."
+        path="/contact"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "name": "Contact ThreeAngles",
+          "url": "https://threeangles.vercel.app/contact"
+        }}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
         {/* Contact Form */}
         <div>

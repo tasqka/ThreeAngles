@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Download } from "lucide-react";
 import { landingContent } from "../data/content";
 import { FeaturedCaseStudies } from "../components/sections/FeaturedCaseStudies";
+import { SEO } from "../components/SEO";
 
 const bannerFormats = [
   {
@@ -72,6 +73,11 @@ export const StreetFurniture: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Street Furniture & Banners"
+        description="Street furniture and banner advertising at pedestrian level. Bus shelters, kiosks, and banners in high-footfall areas."
+        path="/media/banners"
+      />
       {/* Hero Section */}
       <section className="relative pt-28 pb-0 md:pt-36 overflow-hidden" style={{ backgroundColor: '#ea580c' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

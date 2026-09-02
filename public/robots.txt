@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://threeangles.vercel.app/sitemap.xml

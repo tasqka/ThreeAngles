@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Download } from "lucide-react";
 import { landingContent } from "../data/content";
 import { FeaturedCaseStudies } from "../components/sections/FeaturedCaseStudies";
+import { SEO } from "../components/SEO";
 
 const monorailFormats = [
   {
@@ -72,6 +73,11 @@ export const Monorail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Monorail Advertising"
+        description="Reach commuters with monorail advertising across Cairo's new monorail network. High-frequency exposure to daily transit riders."
+        path="/media/monorail"
+      />
       {/* Hero Section */}
       <section className="relative pt-28 pb-0 md:pt-36 overflow-hidden" style={{ backgroundColor: '#ea580c' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

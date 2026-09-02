@@ -1,6 +1,7 @@
 import React from "react";
 import { Briefcase, MapPin, Clock } from "lucide-react";
 import { PageTemplate } from "./PageTemplate";
+import { SEO } from "../components/SEO";
 
 const openings = [
   {
@@ -32,6 +33,11 @@ export const Careers: React.FC = () => {
       title="Careers"
       subtitle="Join Egypt's leading out-of-home media company and help brands dominate the real world."
     >
+      <SEO
+        title="Careers"
+        description="Join ThreeAngles — explore open positions in sales, creative, operations, and technology. Build your career in out-of-home advertising."
+        path="/careers"
+      />
       <div className="space-y-6">
         {openings.map((job) => (
           <div

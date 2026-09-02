@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Download } from "lucide-react";
+import { SEO } from "../components/SEO";
 
 const mediaFormats = [
   {
@@ -45,6 +46,11 @@ export const Media: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Media — OOH Advertising Formats"
+        description="Discover our full range of out-of-home advertising formats: billboards, digital OOH, transit, monorail, street furniture, and mall advertising."
+        path="/media"
+      />
       {/* Hero Section */}
       <section className="relative pt-28 pb-0 md:pt-36 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
