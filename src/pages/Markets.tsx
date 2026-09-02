@@ -117,7 +117,7 @@ export const Markets: React.FC = () => {
             </h1>
 
             <p className="mt-6 text-base sm:text-lg text-white/80 font-normal leading-relaxed max-w-lg">
-              Our media reaches 7 out of 10 Americans weekly. That's one big
+              Our media reaches 7 out of 10 Egyptians weekly. That's one big
               audience—and a lot of dots on the map.
             </p>
 
